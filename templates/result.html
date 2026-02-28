@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nutrition Analysis Result</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .image-box img {
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .metrics {
+            flex: 1;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .score-circle {
+            margin-top: 25px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .good { background: #2ecc71; }
+        .medium { background: #f39c12; }
+        .bad { background: #e74c3c; }
+
+        .recommendation {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 30px auto 0;
+            text-align: center;
+            text-decoration: none;
+            background: #ffffff;
+            color: #243b55;
+            padding: 10px 20px;
+            border-radius: 8px;
+            width: 200px;
+            font-weight: bold;
+        }
+
+        .error {
+            text-align: center;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% else %}
+
+    <h2>Nutrition Analysis: {{ food }}</h2>
+
+    <div class="content">
+        <div class="image-box">
+            <img src="/static/{{ image }}">
+        </div>
+
+        <div class="metrics">
+            <div class="metric-grid">
+                <div class="card">Calories<br><strong>{{ calories }} kcal</strong></div>
+                <div class="card">Protein<br><strong>{{ protein }} g</strong></div>
+                <div class="card">Carbs<br><strong>{{ carbs }} g</strong></div>
+                <div class="card">Fat<br><strong>{{ fat }} g</strong></div>
+            </div>
+
+            {% if score >= 80 %}
+                <div class="score-circle good">{{ score }}/100</div>
+            {% elif score >= 60 %}
+                <div class="score-circle medium">{{ score }}/100</div>
+            {% else %}
+                <div class="score-circle bad">{{ score }}/100</div>
+            {% endif %}
+
+            <div class="recommendation">
+                {% if score >= 80 %}
+                    Excellent nutritional balance. Great choice!
+                {% elif score >= 60 %}
+                    Moderate nutritional value. Consider balancing macros.
+                {% else %}
+                    High calorie or fat content. Consider healthier alternatives.
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    {% endif %}
+
+    <a href="/" class="back-btn">Analyze Another Food</a>
+
+</div>
+
+</body>
+</html>
